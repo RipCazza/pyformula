@@ -11,7 +11,7 @@ def pythagoras(a=None, b=None, c=None):
     
     for key, value in arguments.iteritems():
         if value is not None:
-	    expr = expr.subs(symbol_dict[key], value)
+        expr = expr.subs(symbol_dict[key], value)
 	    
     return [result.evalf() for result in solve(expr)]
 
