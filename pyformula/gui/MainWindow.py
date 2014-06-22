@@ -5,7 +5,7 @@ try:
     from PySide import QtCore, QtGui, uic
     from PySide.QtCore import Signal, Slot
 except ImportError:
-    raise PySideImportError
+    raise pyformula.PySideImportError
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
