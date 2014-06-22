@@ -1,6 +1,5 @@
 import os
 
-
 class PySideImportError(Exception):
     pass
 
@@ -11,10 +10,9 @@ paths = {
         }
 
 try:
-    from . import main
     from . import gui
 except PySideImportError:
-    print("PySide could not be imported"
+    print("PySide could not be imported")
 from . import formulae
 
 __authors__      = ["Stefan Bakker", "Jesse Zwitserlood", "Ruben Bakker"]
@@ -27,3 +25,16 @@ __version__      = "{0}.{1}.{2}{3}".format(__version_info__[0],
                                       __version_info__[2],
                                       __version_info__[3])
 __license__      = "GNU GPLv3"
+
+def main():
+    import sys
+    from pyformula.gui import MainWindow
+    from PySide import QtGui, QtCore
+    app = QtGui.QApplication(sys.argv)
+    app.setApplicationVersion(__version__)
+    app.setApplicationName(app.tr("PyFormula"))
+
+    form = MainWindow()
+    form.show()
+
+    app.exec_()
