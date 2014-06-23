@@ -1,4 +1,5 @@
 import os
+from os.path import basename, splitext, join
 import pyformula
 from .MainWindow import MainWindow
 try:
@@ -8,9 +9,12 @@ try:
 except ImportError:
     raise pyformula.PySideImportError
 
-def loadUi(py_filename):
-    ui_file = QFile(os.path.join(pyformula.paths['designer'],
-        "{}.ui".format(py_filename[:-len(".py")])))
+def get_ui_path(py_filename):
+    ui_basename = "{}.ui".format(splitext(basename(py_filename))[0])
+    return join(pyformula.paths['designer'], ui_basename)
+
+def load_ui(ui_filename):
+    ui_file = QFile(ui_filename)
     loader = QUiLoader()
     ui_file.open(QFile.ReadOnly)
     ui = loader.load(ui_file)
