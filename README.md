@@ -22,11 +22,4 @@ Python 2 compatibility
 =========
 
 Python 2.7 technically works. It requires the 2.7 modules of PySide and SymPy.
-The program has to be run with bytecode generation disabled, because
-`os.path.basename(__file__)` would otherwise return `filename.pyc` instead of
-`filename.py`, which is undesirable and crashes the program. `find . -name
-"*.pyc" -delete` deletes all Python bytecode.`python -B script.py` runs the
-a Python script without generating bytecode.
-
-A more ideal solution would be to get the base name of the Python file without
-the file extension suffix.
+It may, however, break at any point in time.
