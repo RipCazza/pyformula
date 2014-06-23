@@ -10,8 +10,8 @@ except ImportError:
     raise pyformula.PySideImportError
 
 def get_ui_path(py_filename):
-    """Transforms a "filename.py" string into a "/path/to/filename.ui" string,
-    where the path is predefined in pyformula.paths.
+    """Transforms a "/path/to/filename.py" string into a "/path/to/
+    filename.ui" string, where the path is predefined in pyformula.paths.
     """
     ui_basename = "{}.ui".format(splitext(basename(py_filename))[0])
     return join(pyformula.paths['designer'], ui_basename)
