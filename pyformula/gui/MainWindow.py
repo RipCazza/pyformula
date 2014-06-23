@@ -1,5 +1,4 @@
 import pyformula
-import os
 try:
     from PySide import QtCore, QtGui
     from PySide.QtCore import Signal, Slot, QFile
@@ -10,5 +9,5 @@ except ImportError:
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
-        super().__init__(parent)
-        self.ui = pyformula.gui.loadUi(os.path.basename(__file__))
+        super(MainWindow, self).__init__(parent)
+        self.ui = pyformula.gui.load_ui(pyformula.gui.get_ui_path(__file__))
