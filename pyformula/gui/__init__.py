@@ -1,7 +1,6 @@
 import os
 from os.path import basename, splitext, join
 import pyformula
-from .MainWindow import MainWindow
 try:
     from PySide import QtCore, QtGui
     from PySide.QtCore import Signal, Slot, QFile
@@ -24,3 +23,5 @@ def load_ui(ui_filename):
     ui = loader.load(ui_file)
     ui_file.close()
     return ui
+
+from .MainWindow import MainWindow
