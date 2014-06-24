@@ -21,3 +21,4 @@ def get_results(expr, values, symbols_):
     return [result.evalf() for result in solve(expr)]
 
 from . import maths
+from . import guided
