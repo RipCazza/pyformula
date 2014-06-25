@@ -10,6 +10,8 @@ def main():
     print()
     for instruction in pyformula.formulae.guided.abc(2, 10, 3)[1]:
         print(instruction)
+    for instruction in pyformula.formulae.guided.exponential_sum(2, 2, 2)[1]:
+        print(instruction)
 
 if __name__ == "__main__":
     main()
