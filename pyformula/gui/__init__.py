@@ -14,8 +14,6 @@ class MyQUiLoader(QUiLoader):
 
     See:
     github.com/lunaryorn/snippets/blob/master/qt4/designer/pyside_dynamic.py
-
-
     """
     def __init__(self, baseinstance):
         QUiLoader.__init__(self, baseinstance)
