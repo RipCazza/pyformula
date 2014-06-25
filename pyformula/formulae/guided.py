@@ -23,3 +23,18 @@ def abc(a, b, c):
     instructions.append("x = {x1} V x = {x2}".format(x1 = x1, x2 = x2))
 
     return [x1, x2], instructions
+
+def exponential_sum(a, p, q):
+    instructions = []
+    instructions.append("a^p * a^q = a^(p+q)")
+    instructions.append("{a}^{p} * {a}^{q} = {a}^({p}+{q})".format(a = a, p = p,
+                                                                   q = q))
+
+    r = p + q
+    instructions.append("{a}^({p}+{q}) = {a}^{r}".format(a = a, p = p,
+                                                         q = q, r = r))
+
+    x = a**r
+    instructions.append("{a}^{r} = {x}".format(a = a, r = r, x = x))
+
+    return [x], instructions
