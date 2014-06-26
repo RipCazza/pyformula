@@ -20,11 +20,11 @@ __version__      = "{0}.{1}.{2}{3}".format(__version_info__[0],
                                            __version_info__[3])
 __license__      = "GNU GPLv3"
 
+from . import formulae
 try:
     from . import gui
 except PySideImportError:
     print("PySide could not be imported")
-from . import formulae
 
 def main():
     import sys
