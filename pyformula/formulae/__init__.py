@@ -1,24 +1,48 @@
 from sympy import *
 import pyformula
+from copy import deepcopy
 
 
-def get_results(expr, values, symbols_):
-    """Iterate over the number/None values of `values`. For every value that is
-    not None, perform a substitution.
+class Function:
+    def __init__(self, symbols_, expr_left, expr_right):
+        """Creates a Function with a tuple of symbols and two expression
+        strings. The symbols are put in a dictionary with their corresponding
+        string values. The two expressions are equated and made into a single
+        equation.
+        """
+        self.symbols = {}
+        for symbol in symbols_:
+            self.symbols[str(symbol)] = symbol
 
-    `expr` holds references to objects that `symbols_` stores. The corresponding
-    substitution value of these objects is stored in the same indices in
-    `values` as they do in `symbols_`. Using these common indices, the objects
-    in `expr` are replaced with values from `values`.
+        self.expr = Eq(sympify(expr_left), sympify(expr_right))
 
-    After the substitution, the expression is solved and the floats of the
-    solved expression are returned in a list.
-    """
-    for i, value in enumerate(values):
-        if value is not None:
-            expr = expr.subs(symbols_[i], value)
+    def calc(self, values):
+        """Returns a list of floats. ``values`` is a dictionary with the strings
+        of symbols as keys, and their corresponding assigned numerical value as
+        value. The symbols in ``temp_expr`` are substituted with values from
+        ``values``.
 
-    return [result.evalf() for result in solve(expr)]
+        After the substitution, the expression is solved and the floats of the
+        solved expression are returned in a list.
+        """
+        temp_expr = deepcopy(self.expr)
 
-from . import maths
+        for key, value in values.items():
+            if value is not None:
+                temp_expr = temp_expr.subs(self.symbols[key], value)
+
+        return [result.evalf() for result in solve(temp_expr)]
+
+maths = {
+          'pythagoras' : Function(symbols('a b c'),
+                                  "a**2 + b**2", "c**2"),
+          'sine law'   : Function(symbols('a b alpha_ beta_'),
+                                  "a/sin(alpha_)", "b/sin(beta_)"),
+          'cosine law' : Function(symbols('a b c gamma_'),
+                                  "a**2 + b**2 - 2 * a * b * cos(gamma_)",
+                                  "c**2"),
+          'angle calculation' : Function(symbols('alpha_ beta_ gamma_'),
+                                         "pi - alpha_ - beta_", "gamma_"),
+        }
+
 from . import guided
