@@ -99,7 +99,6 @@ def exponential_growth_base(a, b, c):
 def exponential_growth_rate(a, b, c):
     instructions = []
     instructions.append("c ROOT(a / b) = d")
-    print(instructions[0])
     instructions.append("a / b = e")
 
     e = a / b
@@ -126,3 +125,25 @@ def exponential_growth_time(a, b, c):
     instructions.append("{c} log({d}) = {e}".format(c=c, d=d, e=e))
 
     return [e], instructions
+ 
+def parabola_top(a, b, c):
+    instructions = []
+    instructions.append("ax^2 + bx = 0")
+    instructions.append("{a}x^2 + {b}x = 0".format(a=a, b=b))
+    instructions.append("x({a}x + {b}) = 0".format(a=a, b=b))
+    instructions.append("x = 0 V {a}x + {b} = 0".format(a=a, b=b))
+    instructions.append("x = 0 V x = -{b} / {a}".format(a=a, b=b))
+
+    x = -b / a
+    instructions.append("x = 0 V x = {x}".format(x=x))
+    d = x / 2
+    instructions.append("x for symmetry axis is {d}".format(d=d))
+
+    y = a * d**2 + b * d + c
+    instructions.append("{a} * {d}^2 + {b} * {d} + {c} = {y}".format(a=a, b=b,
+                                                                     c=c, d=d,
+                                                                     y=y))
+    instructions.append("({d};{y})".format(d=d, y=y))
+
+    return [y], instructions
+

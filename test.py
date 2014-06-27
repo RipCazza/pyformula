@@ -19,6 +19,8 @@ def main():
         print(instruction)
     for instruction in pyformula.formulae.guided.exponential_growth_time(8, 2 ,2)[1]:
         print(instruction)
+    for instruction in pyformula.formulae.guided.parabola_top(2, 6, 11)[1]:
+        print(instruction)
 
     print()
 
