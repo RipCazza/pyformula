@@ -7,6 +7,18 @@ def main():
         print(instruction)
     for instruction in pyformula.formulae.guided.exponential_sum(2, 2, 2)[1]:
         print(instruction)
+    for instruction in pyformula.formulae.guided.value_percentage(4, 5)[1]:
+        print(instruction)
+    for instruction in pyformula.formulae.guided.percentage_new_value(80, 4)[1]:
+        print(instruction)
+    for instruction in pyformula.formulae.guided.exponential_growth_total(2, 2 ,2)[1]:
+        print(instruction)
+    for instruction in pyformula.formulae.guided.exponential_growth_base(8, 2 ,2)[1]:
+        print(instruction)
+    for instruction in pyformula.formulae.guided.exponential_growth_rate(2, 2 ,8)[1]:
+        print(instruction)
+    for instruction in pyformula.formulae.guided.exponential_growth_time(8, 2 ,2)[1]:
+        print(instruction)
 
     print()
 
