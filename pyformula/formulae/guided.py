@@ -11,7 +11,7 @@ def abc(a, b, c):
                                                              D=D))
 
     if D < 0:
-        return Exception()
+        raise Exception()
 
     x1 = (-b + math.sqrt(D)) / (2 * a)
     x2 = (-b - math.sqrt(D)) / (2 * a)
