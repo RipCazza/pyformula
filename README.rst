@@ -14,8 +14,9 @@ PyFormula
 
 PyFormula is a small algebraic calculator app.
 
-* Free software: BSD license
+* Free software: GPLv3+
 * Documentation: http://pyformula.readthedocs.org.
+* GitHub: https://github.com/RipCazza/pyformula
 
 Features
 --------
