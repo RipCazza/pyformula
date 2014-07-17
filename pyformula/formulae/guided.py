@@ -1,6 +1,4 @@
 import math
-import pyformula
-
 
 def abc(a, b, c):
     instructions = []
@@ -13,7 +11,7 @@ def abc(a, b, c):
                                                              D=D))
 
     if D < 0:
-        return Exception()
+        raise Exception()
 
     x1 = (-b + math.sqrt(D)) / (2 * a)
     x2 = (-b - math.sqrt(D)) / (2 * a)
@@ -65,7 +63,7 @@ def percentage_new_value(b, d):
 def percentage_original_value(d, a):
     instructions = []
     instructions.append("100 / d * a = b")
-    
+
     b = 100 / d * a
     instructions.append("100 / {d}% * {a} = {b}".format(d=d, a=a, b=b))
 
@@ -104,7 +102,7 @@ def exponential_growth_rate(a, b, c):
     e = a / b
     instructions.append("{a} / {b} = {e}".format(a=a, b=b, e=e))
     instructions.append("c ROOT(e) = d")
-    
+
     f = 1 / c
     d = e**f
     instructions.append("{c} ROOT({e}) = {d}".format(c=c, e=e, d=d))
@@ -125,7 +123,7 @@ def exponential_growth_time(a, b, c):
     instructions.append("{c} log({d}) = {e}".format(c=c, d=d, e=e))
 
     return [e], instructions
- 
+
 def parabola_top(a, b, c):
     instructions = []
     instructions.append("ax^2 + bx = 0")
@@ -146,4 +144,3 @@ def parabola_top(a, b, c):
     instructions.append("({d};{y})".format(d=d, y=y))
 
     return [y], instructions
-
