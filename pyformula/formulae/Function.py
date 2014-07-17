@@ -1,4 +1,5 @@
 from copy import deepcopy
+from sympy import *
 
 class Function:
     def __init__(self, name, symbols_, expr):

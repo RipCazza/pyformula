@@ -1,5 +1,5 @@
 from sympy import *
-from . import Function
+from .Function import Function
 
 a, b, c, d, e, alpha, beta, gamma = symbols('a b c d e alpha beta gamma')
 
