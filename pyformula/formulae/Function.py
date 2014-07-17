@@ -1,7 +1,9 @@
 from copy import deepcopy
-from sympy import *
+from sympy import solve
+
 
 class Function:
+
     def __init__(self, name, symbols_, expr):
         """Creates a Function with a tuple of symbols and two expression
         strings. The symbols are put in a dictionary with their corresponding
@@ -16,10 +18,10 @@ class Function:
         self.expr = expr
 
     def calc(self, values):
-        """Returns a list of floats. ``values`` is a dictionary with the strings
-        of symbols as keys, and their corresponding assigned numerical value as
-        value. The symbols in ``temp_expr`` are substituted with values from
-        ``values``.
+        """Returns a list of floats. ``values`` is a dictionary with the
+        strings of symbols as keys, and their corresponding assigned numerical
+        value as value. The symbols in ``temp_expr`` are substituted with
+        values from ``values``.
 
         After the substitution, the expression is solved and the floats of the
         solved expression are returned in a list.

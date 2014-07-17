@@ -1,5 +1,6 @@
 import math
 
+
 def abc(a, b, c):
     instructions = []
     instructions.append("ax^2 + bx + c = 0")
@@ -22,6 +23,7 @@ def abc(a, b, c):
 
     return [x1, x2], instructions
 
+
 def exponential_sum(a, p, q):
     instructions = []
     instructions.append("a^p * a^q = a^(p+q)")
@@ -36,6 +38,7 @@ def exponential_sum(a, p, q):
 
     return [x], instructions
 
+
 def value_percentage(a, b):
     instructions = []
     instructions.append("a / b * 100 = c * 100")
@@ -47,6 +50,7 @@ def value_percentage(a, b):
     instructions.append("{c} * 100 = {d}%".format(c=c, d=d))
 
     return [d], instructions
+
 
 def percentage_new_value(b, d):
     instructions = []
@@ -60,6 +64,7 @@ def percentage_new_value(b, d):
 
     return [b], instructions
 
+
 def percentage_original_value(d, a):
     instructions = []
     instructions.append("100 / d * a = b")
@@ -69,18 +74,20 @@ def percentage_original_value(d, a):
 
     return [b], instructions
 
+
 def exponential_growth_total(a, b, c):
     instructions = []
     instructions.append("a * b^c = e ")
 
     d = b**c
     instructions.append("{a} * {b}^{c} = {a} * {d} ".format(a=a, b=b, c=c,
-                                                             d=d))
+                                                            d=d))
 
     e = a * d
     instructions.append("{a} * {d} = {e}".format(a=a, d=d, e=e))
 
     return [e], instructions
+
 
 def exponential_growth_base(a, b, c):
     instructions = []
@@ -93,6 +100,7 @@ def exponential_growth_base(a, b, c):
     instructions.append("{a} / {d} = {e}".format(a=a, d=d, e=e))
 
     return [e], instructions
+
 
 def exponential_growth_rate(a, b, c):
     instructions = []
@@ -109,6 +117,7 @@ def exponential_growth_rate(a, b, c):
 
     return [d], instructions
 
+
 def exponential_growth_time(a, b, c):
     instructions = []
     instructions.append("a / b = c^e")
@@ -123,6 +132,7 @@ def exponential_growth_time(a, b, c):
     instructions.append("{c} log({d}) = {e}".format(c=c, d=d, e=e))
 
     return [e], instructions
+
 
 def parabola_top(a, b, c):
     instructions = []
