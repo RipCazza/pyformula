@@ -1,4 +1,4 @@
-from sympy import *
+from sympy import symbols, Eq, sin, pi
 from .Function import Function
 
 a, b, c, d, e, alpha, beta, gamma = symbols('a b c d e alpha beta gamma')
