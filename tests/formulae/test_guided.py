@@ -2,7 +2,6 @@ import unittest
 from pyformula.formulae import guided
 
 
-
 class TestGuided(unittest.TestCase):
 
     def test_abc(self):
