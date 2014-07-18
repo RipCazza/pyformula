@@ -13,7 +13,8 @@ class Instruction(object):
 def abc(a, b, c):
     instructions = []
     instructions.append(Instruction("0 = ax^2 + bx + c",
-                                    "{a}x^2 + {b}x + {c}".format(a=a, b=b, c=c),
+                                    "{a}x^2 + {b}x + {c}".format(a=a, b=b,
+                                        c=c),
                                     "0"))
 
     D = b**2 - 4 * a * c
