@@ -17,7 +17,7 @@ class Function:
 
         self.expr = expr
 
-    def calc(self, values):
+    def __call__(self, values):
         """Returns a list of floats. ``values`` is a dictionary with the
         strings of symbols as keys, and their corresponding assigned numerical
         value as value. The symbols in ``temp_expr`` are substituted with
