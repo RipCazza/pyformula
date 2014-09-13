@@ -9,35 +9,50 @@ class Instruction(object):
         self.filled_in_func = filled_in_func
         self.ans = ans
 
+class Function(object):
 
-def abc(a, b, c):
-    instructions = []
-    instructions.append(Instruction("0 = ax^2 + bx + c",
-                                    "{a}x^2 + {b}x + {c}".format(a=a, b=b,
-                                                                 c=c),
-                                    "0"))
+    def __init__(self, name, expr, args):
+        self.name = name
+        self.expr = expr
+        self.args = args
 
-    D = b**2 - 4 * a * c
-    instructions.append(Instruction("D = b^2 - 4 * a * c",
-                                    "{b}^2 - 4 * {a} * {c}".format(a=a, b=b,
-                                                                   c=c),
-                                    str(D)))
+class Abc(Function):
 
-    if D < 0:
-        raise Exception()
+    def __call__(self, args):
+        a = args["a"]
+        b = args["b"]
+        c = args["c"]
 
-    x1 = (-b + math.sqrt(D)) / (2 * a)
-    x2 = (-b - math.sqrt(D)) / (2 * a)
+        instructions = []
+        instructions.append(Instruction("0 = ax^2 + bx + c",
+                                        "{a}x^2 + {b}x + {c}".format(a=a, b=b,
+                                                                    c=c),
+                                        "0"))
 
-    instructions.append(Instruction("x1 = (-b + sqrt(D)) / (2 * a) V "
-                                    "x2 = (-b - sqrt(D)) / (2 * a)",
-                                    "(-{b} + sqrt({D})) / (2 * {a}) V "
-                                    "(-{b} - sqrt({D})) / (2 * {a})".format(
-                                        b=b, D=D, a=a),
-                                    "{x1} V {x2}".format(x1=x1, x2=x2)))
+        D = b**2 - 4 * a * c
+        instructions.append(Instruction("D = b^2 - 4 * a * c",
+                                        "{b}^2 - 4 * {a} * {c}".format(a=a,
+                                                                       b=b,
+                                                                       c=c),
+                                        str(D)))
 
-    return instructions
+        if D < 0:
+            raise Exception()
 
+        x1 = (-b + math.sqrt(D)) / (2 * a)
+        x2 = (-b - math.sqrt(D)) / (2 * a)
+
+        instructions.append(Instruction("x1 = (-b + sqrt(D)) / (2 * a) V "
+                                        "x2 = (-b - sqrt(D)) / (2 * a)",
+                                        "(-{b} + sqrt({D})) / (2 * {a}) V "
+                                        "(-{b} - sqrt({D})) / (2 * {a})".format(
+                                            b=b, D=D, a=a),
+                                        "{x1} V {x2}".format(x1=x1, x2=x2)))
+
+        return instructions
+
+abc = Abc("Abc formule", u"x = (-b +/- √(b^2 - 4 * a * c)) / (2 * a)",
+          ["a", "b", "c"])
 
 def exponential_sum(a, p, q):
     instructions = []
