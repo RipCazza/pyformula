@@ -1,3 +1,4 @@
+import sys
 from PySide import QtCore, QtGui
 from ..formulae import guided
 
@@ -10,12 +11,13 @@ class MainWindow(QtGui.QMainWindow):
         self.refresh_function_switch()
         self.refresh_input_widget()
 
-        self.calc()
-
         self.function_combo.currentIndexChanged.connect(
             self.refresh_function_switch)
         self.function_combo.currentIndexChanged.connect(
             self.refresh_input_widget)
+        self.function_combo.currentIndexChanged.connect(
+            self.answer_lbl.clear)
+        self.calc_btn.clicked.connect(self.calc)
 
     def _init_ui(self):
         self.central_widget = QtGui.QWidget(self)
@@ -28,26 +30,33 @@ class MainWindow(QtGui.QMainWindow):
         function_layout.addWidget(self.function_combo)
 
         desc_layout = QtGui.QHBoxLayout()
-        self.desc_lbl = QtGui.QLabel(self.tr("foo"))
+        self.desc_lbl = QtGui.QLabel()
+        self.desc_lbl.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         desc_layout.addWidget(self.desc_lbl)
 
         # To be filled depending on selected function.
         input_layout = QtGui.QVBoxLayout()
         self.input_widget = QtGui.QStackedWidget()
+        self.input_widget.setSizePolicy(QtGui.QSizePolicy.Preferred,
+                                        QtGui.QSizePolicy.Fixed)
         input_layout.addWidget(self.input_widget)
 
-        # create list: [[label, spin], [label, spin]]
-        # self.input_layout.addWidget(lst[0][0])
-        # self.input_layout.addWidget(lst[0][1])
+        calc_layout = QtGui.QHBoxLayout()
+        self.calc_btn = QtGui.QPushButton(self.tr("Bereken"))
+        calc_layout.addStretch()
+        calc_layout.addWidget(self.calc_btn)
 
         answer_layout = QtGui.QVBoxLayout()
-        self.answer_lbl = QtGui.QLabel(self.tr("N/A"))
+        self.answer_lbl = QtGui.QLabel()
+        self.answer_lbl.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         answer_layout.addWidget(self.answer_lbl)
 
         layout = QtGui.QVBoxLayout()
         layout.addLayout(function_layout)
         layout.addLayout(desc_layout)
         layout.addLayout(input_layout)
+        layout.addLayout(calc_layout)
+        layout.addStretch()
         layout.addLayout(answer_layout)
         self.central_widget.setLayout(layout)
 
@@ -76,7 +85,25 @@ class MainWindow(QtGui.QMainWindow):
         for key, spin in self.input_widget.currentWidget().spins.items():
             args[key] = spin.value()
 
-        #print(guided.abc(args))
+        index = self.function_combo.currentIndex()
+        function = self.function_combo.itemData(index)
+
+        try:
+            instructions = function(args)
+        except:
+            self.answer_lbl.setText(self.tr("Geen oplossing gevonden"))
+            return
+
+        text = ""
+
+        for instruction in instructions:
+            text += "<p>" + instruction.orig_func + "<br>\n"
+            text += instruction.filled_in_func + "</p>\n\n"
+            #text = text + instruction.ans + "\n"
+
+        text +=  "<p><b>" + instructions[-1].ans + "</b></p>"
+
+        self.answer_lbl.setText(text)
 
 class InputWidget(QtGui.QWidget):
     def __init__(self, function):
@@ -89,7 +116,13 @@ class InputWidget(QtGui.QWidget):
         for arg in function.args:
             hor_layout = QtGui.QHBoxLayout()
             label = QtGui.QLabel("{}:".format(arg))
+            label.setSizePolicy(QtGui.QSizePolicy.Minimum,
+                                QtGui.QSizePolicy.Fixed)
             dspinbox = QtGui.QDoubleSpinBox()
+            dspinbox.setSizePolicy(QtGui.QSizePolicy.Expanding,
+                                   QtGui.QSizePolicy.Fixed)
+            dspinbox.setMaximum(sys.maxsize)
+            dspinbox.setMinimum(-sys.maxsize - 1)
             hor_layout.addWidget(label)
             hor_layout.addWidget(dspinbox)
 
@@ -97,7 +130,6 @@ class InputWidget(QtGui.QWidget):
 
             self.spins[arg] = dspinbox
 
-        #layout = QtGui.QVBoxLayout()
-        #layout.addWidget(QtGui.QLabel("Hello"))
+        layout.setContentsMargins(0, 0, 0, 0)
 
         self.setLayout(layout)
