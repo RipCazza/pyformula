@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import division
 import math
 
@@ -9,50 +11,68 @@ class Instruction(object):
         self.filled_in_func = filled_in_func
         self.ans = ans
 
+class Function(object):
 
-def abc(a, b, c):
-    instructions = []
-    instructions.append(Instruction("0 = ax^2 + bx + c",
-                                    "{a}x^2 + {b}x + {c}".format(a=a, b=b,
-                                                                 c=c),
-                                    "0"))
+    def __init__(self, name, expr, args):
+        self.name = name
+        self.expr = expr
+        self.args = args
 
-    D = b**2 - 4 * a * c
-    instructions.append(Instruction("D = b^2 - 4 * a * c",
-                                    "{b}^2 - 4 * {a} * {c}".format(a=a, b=b,
-                                                                   c=c),
-                                    str(D)))
+class Abc(Function):
 
-    if D < 0:
-        raise Exception()
+    def __call__(self, args):
+        a = args["a"]
+        b = args["b"]
+        c = args["c"]
 
-    x1 = (-b + math.sqrt(D)) / (2 * a)
-    x2 = (-b - math.sqrt(D)) / (2 * a)
+        instructions = []
+        instructions.append(Instruction("0 = ax^2 + bx + c",
+                                        "{a}x^2 + {b}x + {c}".format(a=a, b=b,
+                                                                    c=c),
+                                        "0"))
 
-    instructions.append(Instruction("x1 = (-b + sqrt(D)) / (2 * a) V "
-                                    "x2 = (-b - sqrt(D)) / (2 * a)",
-                                    "(-{b} + sqrt({D})) / (2 * {a}) V "
-                                    "(-{b} - sqrt({D})) / (2 * {a})".format(
-                                        b=b, D=D, a=a),
-                                    "{x1} V {x2}".format(x1=x1, x2=x2)))
+        D = b**2 - 4 * a * c
+        instructions.append(Instruction("D = b^2 - 4 * a * c",
+                                        "{b}^2 - 4 * {a} * {c}".format(a=a,
+                                                                       b=b,
+                                                                       c=c),
+                                        str(D)))
 
-    return instructions
+        if D < 0:
+            raise Exception()
 
+        x1 = (-b + math.sqrt(D)) / (2 * a)
+        x2 = (-b - math.sqrt(D)) / (2 * a)
 
-def exponential_sum(a, p, q):
-    instructions = []
-    instructions.append("a^p * a^q = a^(p+q)")
-    instructions.append("{a}^{p} * {a}^{q} = {a}^({p}+{q})".format(a=a, p=p,
-                                                                   q=q))
+        instructions.append(Instruction("x1 = (-b + sqrt(D)) / (2 * a) V "
+                                        "x2 = (-b - sqrt(D)) / (2 * a)",
+                                        "(-{b} + sqrt({D})) / (2 * {a}) V "
+                                        "(-{b} - sqrt({D})) / (2 * {a})".format(
+                                            b=b, D=D, a=a),
+                                        "{x1} V {x2}".format(x1=x1, x2=x2)))
 
-    r = p + q
-    instructions.append("{a}^({p}+{q}) = {a}^{r}".format(a=a, p=p, q=q, r=r))
+        return instructions
 
-    x = a**r
-    instructions.append("{a}^{r} = {x}".format(a=a, r=r, x=x))
+class ExponentialSum(Function):
 
-    return [x], instructions
+    def __call__(self, args):
+        a = args["a"]
+        p = args["p"]
+        q = args["q"]
 
+        instructions = []
+        r = p + q
+        instructions.append(Instruction("a^(p+q) = a^p * a^q",
+                            "{a}^({p}+{q}) = {a}^{p} * {a}^{q}".format(a=a,
+                                                                       p=p,
+                                                                       q=q),
+                            "{a}^{r}".format(a=a, r=r)))
+
+        x = a**r
+        instructions.append(Instruction("x = a^r", "{a}^{r}".format(a=a, r=r),
+                            "{x}".format(x=x)))
+
+        return instructions
 
 def value_percentage(a, b):
     instructions = []
@@ -169,3 +189,8 @@ def parabola_top(a, b, c):
     instructions.append("({d};{y})".format(d=d, y=y))
 
     return [y], instructions
+
+abc = Abc("Abc formule", u"x = (-b +/- √(b^2 - 4 * a * c)) / (2 * a)",
+          ["a", "b", "c"])
+exponential_sum = ExponentialSum("Exponentiële som", "a^(p+q) = a^p * a^q",
+                                 ["a", "p", "q"])
