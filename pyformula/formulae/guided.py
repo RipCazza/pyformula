@@ -53,23 +53,26 @@ class Abc(Function):
 
         return instructions
 
-abc = Abc("Abc formule", u"x = (-b +/- √(b^2 - 4 * a * c)) / (2 * a)",
-          ["a", "b", "c"])
+class ExponentialSum(Function):
 
-def exponential_sum(a, p, q):
-    instructions = []
-    instructions.append("a^p * a^q = a^(p+q)")
-    instructions.append("{a}^{p} * {a}^{q} = {a}^({p}+{q})".format(a=a, p=p,
-                                                                   q=q))
+    def __call__(self, args):
+        a = args["a"]
+        p = args["p"]
+        q = args["q"]
 
-    r = p + q
-    instructions.append("{a}^({p}+{q}) = {a}^{r}".format(a=a, p=p, q=q, r=r))
+        instructions = []
+        r = p + q
+        instructions.append(Instruction("a^(p+q) = a^p * a^q",
+                            "{a}^({p}+{q}) = {a}^{p} * {a}^{q}".format(a=a,
+                                                                       p=p,
+                                                                       q=q),
+                            "{a}^{r}".format(a=a, r=r)))
 
-    x = a**r
-    instructions.append("{a}^{r} = {x}".format(a=a, r=r, x=x))
+        x = a**r
+        instructions.append(Instruction("x = a^r", "{a}^{r}".format(a=a, r=r),
+                            "{x}".format(x=x)))
 
-    return [x], instructions
-
+        return instructions
 
 def value_percentage(a, b):
     instructions = []
@@ -186,3 +189,8 @@ def parabola_top(a, b, c):
     instructions.append("({d};{y})".format(d=d, y=y))
 
     return [y], instructions
+
+abc = Abc("Abc formule", u"x = (-b +/- √(b^2 - 4 * a * c)) / (2 * a)",
+          ["a", "b", "c"])
+exponential_sum = ExponentialSum("Exponentiële som", "a^(p+q) = a^p * a^q",
+                                 ["a", "p", "q"])
