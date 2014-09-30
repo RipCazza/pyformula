@@ -53,6 +53,9 @@ class Abc(Function):
 
         return instructions
 
+abc = Abc("Abc formule", u"x = (-b +/- √(b^2 - 4 * a * c)) / (2 * a)",
+          ["a", "b", "c"])
+
 class ExponentialSum(Function):
 
     def __call__(self, args):
@@ -68,129 +71,315 @@ class ExponentialSum(Function):
                                                                        q=q),
                             "{a}^{r}".format(a=a, r=r)))
 
-        x = a**r
-        instructions.append(Instruction("x = a^r", "{a}^{r}".format(a=a, r=r),
-                            "{x}".format(x=x)))
-
         return instructions
 
-def value_percentage(a, b):
-    instructions = []
-    instructions.append("a / b * 100 = c * 100")
-
-    c = a / b
-    instructions.append("{a} / {b} * 100 = {c} * 100".format(a=a, b=b, c=c))
-
-    d = c * 100
-    instructions.append("{c} * 100 = {d}%".format(c=c, d=d))
-
-    return [d], instructions
-
-
-def percentage_new_value(b, d):
-    instructions = []
-    instructions.append("d / 100 * b = a")
-
-    c = d * b
-    instructions.append("{d}% / 100 * {b} = {c} / 100".format(d=d, b=b, c=c))
-
-    a = c / 100
-    instructions.append("{c} / 100 = {a}".format(a=a, c=c))
-
-    return [b], instructions
-
-
-def percentage_original_value(d, a):
-    instructions = []
-    instructions.append("100 / d * a = b")
-
-    b = 100 / d * a
-    instructions.append("100 / {d}% * {a} = {b}".format(d=d, a=a, b=b))
-
-    return [b], instructions
-
-
-def exponential_growth_total(a, b, c):
-    instructions = []
-    instructions.append("a * b^c = e ")
-
-    d = b**c
-    instructions.append("{a} * {b}^{c} = {a} * {d} ".format(a=a, b=b, c=c,
-                                                            d=d))
-
-    e = a * d
-    instructions.append("{a} * {d} = {e}".format(a=a, d=d, e=e))
-
-    return [e], instructions
-
-
-def exponential_growth_base(a, b, c):
-    instructions = []
-    instructions.append("a / b^c = e")
-
-    d = b**c
-    instructions.append("{a} / {b}^{c} = {a} / {d}".format(a=a, b=b, c=c, d=d))
-
-    e = a / d
-    instructions.append("{a} / {d} = {e}".format(a=a, d=d, e=e))
-
-    return [e], instructions
-
-
-def exponential_growth_rate(a, b, c):
-    instructions = []
-    instructions.append("c ROOT(a / b) = d")
-    instructions.append("a / b = e")
-
-    e = a / b
-    instructions.append("{a} / {b} = {e}".format(a=a, b=b, e=e))
-    instructions.append("c ROOT(e) = d")
-
-    f = 1 / c
-    d = e**f
-    instructions.append("{c} ROOT({e}) = {d}".format(c=c, e=e, d=d))
-
-    return [d], instructions
-
-
-def exponential_growth_time(a, b, c):
-    instructions = []
-    instructions.append("a / b = c^e")
-    instructions.append("c log(a / b) = e")
-    instructions.append("a / b = d")
-
-    d = a / b
-    instructions.append("{a} / {b} = {d}".format(a=a, b=b, d=d))
-    instructions.append("c log(d) = e")
-
-    e = math.log(d, c)
-    instructions.append("{c} log({d}) = {e}".format(c=c, d=d, e=e))
-
-    return [e], instructions
-
-
-def parabola_top(a, b, c):
-    instructions = []
-    instructions.append("ax^2 + bx = 0")
-    instructions.append("{a}x^2 + {b}x = 0".format(a=a, b=b))
-    instructions.append("x({a}x + {b}) = 0".format(a=a, b=b))
-    instructions.append("x = 0 V {a}x + {b} = 0".format(a=a, b=b))
-    instructions.append("x = 0 V x = -{b} / {a}".format(a=a, b=b))
-
-    x = -b / a
-    instructions.append("x = 0 V x = {x}".format(x=x))
-    d = x / 2
-    instructions.append("x for symmetry axis is {d}".format(d=d))
-
-    y = a * d**2 + b * d + c
-    instructions.append("{a} * {d}^2 + {b} * {d} + {c} = {y}".format(a=a, b=b,
-                                                                     c=c, d=d,
-                                                                     y=y))
-    instructions.append("({d};{y})".format(d=d, y=y))
-
-    return [y], instructions
-
-abc = Abc("Abc formule", u"x = (-b +/- √(b^2 - 4 * a * c)) / (2 * a)",
-          ["a", "b", "c"])
 exponential_sum = ExponentialSum("Exponentiële som", "a^(p+q) = a^p * a^q",
                                  ["a", "p", "q"])
+
+class ValuePercentage(Function):
+
+    def __call__(self, args):
+        a = args["a"]
+        b = args["b"]
+
+        instructions = []
+        c = a / b
+        x = c * 100
+        instructions.append(Instruction("x% = a / b * 100",
+                                        "{c} * 100 = {a} / {b} * 100".format(
+                                            a=a, b=b, c=c),
+                                        "{x}%".format(x=x)))
+        return instructions
+
+value_percentage = ValuePercentage("Percentage berekening", "x% = a / b * 100",
+                                   ["a", "b"])
+
+class PercentageNewValue(Function):
+
+    def __call__(self, args):
+        x = args["x"]
+        b = args["b"]
+
+        instructions = []
+        c = x * b
+        a = c / 100
+        instructions.append(Instruction("a = x% / 100 * b",
+                                        "{c} / 100 = {x}% / 100 * {b}".format(
+                                            x=x, b=b, c=c),
+                                        "{a}".format(a=a)))
+        return instructions
+
+percentage_new_value = PercentageNewValue("Percentage nieuwe waarde",
+                                          "a = x% / 100 * b", ["x", "b"])
+
+class PercentageOrigValue(Function):
+
+    def __call__(self, args):
+        x = args["x"]
+        a = args["a"]
+
+        instructions = []
+        c = x * a
+        b = 100 / c
+        instructions.append(Instruction("b = 100 / x% * a",
+                                        "100 / {c} = 100 / {x}% * {a}".format(
+                                            c=c, x=x, a=a),
+                                        "{b}".format(b=b)))
+        return instructions
+
+percentage_orig_value = PercentageOrigValue("Percentage originele waarde",
+                                                    "b = 100 / x% * a",
+                                                    ["x", "a"])
+
+class ExponentialGrowthTotal(Function):
+
+    def  __call__(self, args):
+        a = args["a"]
+        g = args["g"]
+        x = args["x"]
+
+        instructions = []
+        b = g**x
+        y = a * b
+        instructions.append(Instruction("y = a * g^x",
+                                        "{a} * {b} = {a} * {g}^{x}".format(
+                                            a=a, b=b, g=g, x=x),
+                                        "{y}".format(y=y)))
+        return instructions
+
+exponential_growth_total = ExponentialGrowthTotal("Exponentiële functie",
+                                                  "y = a * g^x",
+                                                  ["a", "g", "x"])
+
+class ExponentialGrowthBase(Function):
+
+    def __call__(self, args):
+        y = args["y"]
+        g = args["g"]
+        x = args["x"]
+
+        instructions = []
+        b = g**x
+        a = y / b
+        instructions.append(Instruction("a = y / g^x",
+                                        "{y} / {b} = {y} / {g}^{x}".format(
+                                            y=y, b=b, g=g, x=x),
+                                        "{a}".format(a=a)))
+        return instructions
+
+exponential_growth_base = ExponentialGrowthBase("Exponentiële deelfunctie",
+                                                "a = y / g^x",
+                                                ["y", "g", "x"])
+
+class PythagorasDiagonal(Function):
+
+    def __call__(self, args):
+        a = args["a"]
+        b = args["b"]
+
+        instructions = []
+        d = a**2 + b**2
+        instructions.append(Instruction("c^2 = a^2 + b^2",
+                                        "{a}^2 + {b}^2".format(a=a, b=b),
+                                        "{d}".format(d=d)))
+        c = math.sqrt(d)
+        instructions.append(Instruction("c = √(a^2 + b^2)",
+                                        "√{d}".format(d=d),
+                                        "{c}".format(c=c)))
+        return instructions
+
+pythagoras_diagonal = PythagorasDiagonal("Pythagoras: schuine zijde",
+                                        "c^2 = a^2 + b^2",
+                                        ["a", "b"])
+
+class PythagorasRectangular(Function):
+
+    def __call__(self, args):
+        a = args["a"]
+        c = args["c"]
+
+        instructions = []
+        d = c**2 - a**2
+        instructions.append(Instruction("b^2 = c^2 - a^2",
+                                        "{c}^2 - {a}^2".format(c=c, a=a),
+                                        "{d}".format(d=d)))
+        b = math.sqrt(d)
+        instructions.append(Instruction("b = √(c^2 - a^2)",
+                                        "√{d}".format(d=d),
+                                        "{b}".format(b=b)))
+        return instructions
+
+pythagoras_rectangular = PythagorasRectangular("Pythagoras: rechthoekszijde",
+                                               "b^2 = c^2 - a^2",
+                                               ["a", "c"])
+
+class TangensRadian(Function):
+
+    def __call__(self, args):
+        o = args["o"]
+        a = args["a"]
+
+        instructions = []
+        tan = o / a
+        instructions.append(Instruction("tan(x) = overstaand / aanliggend",
+                                        "{o} / {a}".format(o=o, a=a),
+                                        "{tan}".format(tan=tan)))
+        x = math.atan(tan)
+        instructions.append(Instruction("x = tan-1(tan(x))",
+                                        "tan-1({tan})".format(tan=tan),
+                                        "{x}".format(x=x)))
+        return instructions
+
+tangens_radian = TangensRadian("Tangens hoekberekening",
+                               "tan(x) = overstaand / aanliggend",
+                               ["o", "a"])
+
+class SinusRadian(Function):
+
+    def __call__(self, args):
+        o = args["o"]
+        s = args["s"]
+
+        instructions = []
+        sin = o / s
+        instructions.append(Instruction("sin(x) = overstaand / schuin",
+                                        "{o} / {s}".format(o=o, s=s),
+                                        "{sin}".format(sin=sin)))
+        x = math.asin(sin)
+        instructions.append(Instruction("x = sin-1(sin(x))",
+                                        "sin-1({sin})".format(sin=sin),
+                                        "{x}".format(x=x)))
+        return instructions
+
+sinus_radian = SinusRadian("Sinus hoekberekening",
+                           "sin(x) = overstaand / schuin",
+                           ["o", "s"])
+
+class CosinusRadian(Function):
+
+    def __call__(self, args):
+        a = args["a"]
+        s = args["s"]
+
+        instructions = []
+        cos = a / s
+        instructions.append(Instruction("cos(x) = aanliggend / schuin",
+                                        "{a} / {s}".format(a=a, s=s),
+                                        "{cos}".format(cos=cos)))
+        x = math.acos(cos)
+        instructions.append(Instruction("x = cos-1(cos(x))",
+                                        "cos-1({cos})".format(cos=cos),
+                                        "{x}".format(x=x)))
+        return instructions
+
+cosinus_radian = CosinusRadian("Cosinus hoekberekening",
+                               "cos(x) = aanliggend / schuin",
+                               ["a", "s"])
+
+class TangensO(Function):
+
+    def __call__(self, args):
+        x = args["x"]
+        a = args["a"]
+
+        instructions = []
+        tan = math.tan(x)
+        o = tan * a
+        instructions.append(Instruction("overstaand = tan(x) * aanliggend",
+                                        "{tan} * {a}".format(tan=tan, a=a),
+                                        "{o}".format(o=o)))
+        return instructions
+
+tangens_o = TangensO("Tangens: overstaand",
+                     "overstaand = tan(x) * aanliggend",
+                     ["x", "a"])
+
+class SinusO(Function):
+
+    def __call__(self, args):
+        x = args["x"]
+        s = args["s"]
+
+        instructions = []
+        sin = math.sin(x)
+        o = sin * s
+        instructions.append(Instruction("overstaand = sin(x) * schuin",
+                                        "{sin} * {s}".format(sin=sin, s=s),
+                                        "{o}".format(o=o)))
+        return instructions
+
+sinus_o = SinusO("Sinus: overstaand",
+                 "overstaand = sin(x) * schuin",
+                 ["x", "s"])
+
+class CosinusA(Function):
+
+    def __call__(self, args):
+        x = args["x"]
+        s = args["s"]
+
+        instructions = []
+        cos = math.cos(x)
+        a = cos * s
+        instructions.append(Instruction("aanliggend = cos(x) * schuin",
+                                        "{cos} * {s}".format(cos=cos, s=s),
+                                        "{a}".format(a=a)))
+        return instructions
+
+cosinus_a = CosinusA("Cosinus: aanliggend",
+                     "aanliggend = cos(x) * schuin",
+                     ["x", "s"])
+
+class TangensA(Function):
+
+    def __call__(self, args):
+        x = args["x"]
+        o = args["o"]
+
+        instructions = []
+        tan = math.tan(x)
+        a = o / tan
+        instructions.append(Instruction("aanliggend = overstaand / tan(x)",
+                                        "{o} / {tan}".format(tan=tan, o=o),
+                                        "{a}".format(a=a)))
+        return instructions
+
+tangens_a = TangensA("Tangens: aanliggend",
+                     "aanliggend = overstaand / tan(x)",
+                     ["x", "o"])
+
+class SinusS(Function):
+
+    def __call__(self, args):
+        x = args["x"]
+        o = args["o"]
+
+        instructions = []
+        sin = math.sin(x)
+        s = o / sin
+        instructions.append(Instruction("schuin = overstaand / sin(x)",
+                                        "{o} / {sin}".format(sin=sin, o=o),
+                                        "{s}".format(s=s)))
+        return instructions
+
+sinus_s = SinusS("Sinus: schuin",
+                 "schuin = overstaand / sin(x)",
+                 ["x", "o"])
+
+class CosinusS(Function):
+
+    def __call__(self, args):
+        x = args["x"]
+        a = args["a"]
+
+        instructions = []
+        cos = math.cos(x)
+        s = a / cos
+        instructions.append(Instruction("schuin = aanliggend / cos(x)",
+                                        "{a} / {cos}".format(cos=cos, a=a),
+                                        "{s}".format(s=s)))
+        return instructions
+
+cosinus_s = CosinusS("Cosinus: schuin",
+                     "schuin = aanliggend / cos(x)",
+                     ["x", "a"])
