@@ -37,8 +37,8 @@ class MainWindow(QtGui.QMainWindow):
         # To be filled depending on selected function.
         input_layout = QtGui.QVBoxLayout()
         self.input_widget = QtGui.QStackedWidget()
-        self.input_widget.setSizePolicy(QtGui.QSizePolicy.Preferred,
-                                        QtGui.QSizePolicy.Fixed)
+        #self.input_widget.setSizePolicy(QtGui.QSizePolicy.Preferred,
+                                        #QtGui.QSizePolicy.Fixed)
         input_layout.addWidget(self.input_widget)
 
         calc_layout = QtGui.QHBoxLayout()
@@ -64,7 +64,40 @@ class MainWindow(QtGui.QMainWindow):
         # We'll have to manually add all functions here.  It's a shit solution,
         # but it's the best we've got.
         self.function_combo.addItem(guided.abc.name, guided.abc)
-        self.function_combo.addItem("hello", guided.Function("a", "b", ["c"]))
+        self.function_combo.addItem(guided.exponential_sum.name,
+                                    guided.exponential_sum)
+        self.function_combo.addItem(guided.value_percentage.name,
+                                    guided.value_percentage)
+        self.function_combo.addItem(guided.percentage_new_value.name,
+                                    guided.percentage_new_value)
+        self.function_combo.addItem(guided.percentage_orig_value.name,
+                                    guided.percentage_orig_value)
+        self.function_combo.addItem(guided.exponential_growth_total.name,
+                                    guided.exponential_growth_total)
+        self.function_combo.addItem(guided.exponential_growth_base.name,
+                                    guided.exponential_growth_base)
+        self.function_combo.addItem(guided.pythagoras_diagonal.name,
+                                    guided.pythagoras_diagonal)
+        self.function_combo.addItem(guided.pythagoras_rectangular.name,
+                                    guided.pythagoras_rectangular)
+        self.function_combo.addItem(guided.tangens_radian.name,
+                                    guided.tangens_radian)
+        self.function_combo.addItem(guided.sinus_radian.name,
+                                    guided.sinus_radian)
+        self.function_combo.addItem(guided.cosinus_radian.name,
+                                    guided.cosinus_radian)
+        self.function_combo.addItem(guided.tangens_o.name,
+                                    guided.tangens_o)
+        self.function_combo.addItem(guided.sinus_o.name,
+                                    guided.sinus_o)
+        self.function_combo.addItem(guided.cosinus_a.name,
+                                    guided.cosinus_a)
+        self.function_combo.addItem(guided.tangens_a.name,
+                                    guided.tangens_a)
+        self.function_combo.addItem(guided.sinus_s.name,
+                                    guided.sinus_s)
+        self.function_combo.addItem(guided.cosinus_s.name,
+                                    guided.cosinus_s)
 
     def refresh_function_switch(self):
         index = self.function_combo.currentIndex()
