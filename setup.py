@@ -46,6 +46,11 @@ setup(
     ],
     package_dir={'pyformula':
                  'pyformula'},
+    entry_points={
+        'gui_scripts': [
+            'pyformula = pyformula.main:main'
+        ]
+    },
     include_package_data=True,
     install_requires=requirements,
     license="GPLv3+",
