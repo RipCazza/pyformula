@@ -154,8 +154,8 @@ class InputWidget(QtGui.QWidget):
             dspinbox = QtGui.QDoubleSpinBox()
             dspinbox.setSizePolicy(QtGui.QSizePolicy.Expanding,
                                    QtGui.QSizePolicy.Fixed)
-            dspinbox.setMaximum(sys.maxsize)
-            dspinbox.setMinimum(-sys.maxsize - 1)
+            dspinbox.setMaximum(10**6)
+            dspinbox.setMinimum(-10**6)
             hor_layout.addWidget(label)
             hor_layout.addWidget(dspinbox)
 
