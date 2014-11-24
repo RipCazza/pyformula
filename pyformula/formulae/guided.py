@@ -44,10 +44,10 @@ class Abc(Function):
         x1 = (-b + math.sqrt(D)) / (2 * a)
         x2 = (-b - math.sqrt(D)) / (2 * a)
 
-        instructions.append(Instruction("x1 = (-b + sqrt(D)) / (2 * a) V "
-                                        "x2 = (-b - sqrt(D)) / (2 * a)",
-                                        "(-{b} + sqrt({D})) / (2 * {a}) V "
-                                        "(-{b} - sqrt({D})) / (2 * {a})".format(
+        instructions.append(Instruction("x1 = (-b + √(D)) / (2 * a) V "
+                                        "x2 = (-b - √(D)) / (2 * a)",
+                                        "(-{b} + √({D})) / (2 * {a}) V "
+                                        "(-{b} - √({D})) / (2 * {a})".format(
                                             b=b, D=D, a=a),
                                         "{x1} V {x2}".format(x1=x1, x2=x2)))
 
